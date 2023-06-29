@@ -62,7 +62,8 @@ def LlamaChat(bot_name, question):
         yield text
 
 if __name__ == "__main__":
-    question = "どのような人材を目指していますか 日本語回答して"
+    question = "どのような人材を目指していますか"
+    question += " 日本語で回答して"
     bot_name = "faculty"
     try:
         response = LlamaChat(bot_name, question)
