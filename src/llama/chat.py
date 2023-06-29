@@ -60,7 +60,6 @@ def LlamaChat(bot_name, question):
     response = query_engine.query(question)
     for text in response.response_gen:
         yield text
-
 if __name__ == "__main__":
     question = "どのような人材を目指していますか"
     question += " 日本語で回答して"
