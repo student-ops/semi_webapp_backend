@@ -22,13 +22,13 @@ def llama_chat_route():
             buffer_size += len(response_text.encode('utf-8'))  # Get the byte size of the response_text in UTF-8
 
             if buffer_size >= 8:  # Send the buffer when its size reaches 20 bytes (5 characters in UTF-8)
-                yield f"data: {buffer}\n\n"
+                yield f"{buffer}"
                 buffer = ""
                 buffer_size = 0
 
         # Send any remaining data in the buffer
         if buffer:
-            yield f"data: {buffer}\n\n"
+            yield f"{buffer}"
 
     return Response(stream_with_context(generate()), mimetype='text/event-stream')
 # @app.route('/evaluate',methods =['POST'])
