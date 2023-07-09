@@ -10,8 +10,11 @@ from llama_index import (
 )
 from src.llama import utils
 from pprint import pprint 
+import redis
+import pickle
+import uuid
 
-
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 def InitIndex(bot_name):
     print("init index")
@@ -37,7 +40,7 @@ def InitIndex(bot_name):
     return index
 
 
-def LlamaChat(bot_name, question):
+def LlamaChat(bot_name, question,uuid):
     model_name = "text-davinci-003"
     model_temperature = 0
 
@@ -61,16 +64,22 @@ def LlamaChat(bot_name, question):
         service_context=service_context
     )
     response = query_engine.query(question)
-    response.get_response()
+    response_txt = ""
     for text in response.response_gen:
+        response_txt += text
         yield text
+    res = response.get_response()
+    res.response = response_txt
+    pprint(res)
+    r.set(uuid, pickle.dumps(res))
 
 if __name__ == "__main__":
     question = "どのような人材を目指していますか"
     question += " 日本語で回答して"
     bot_name = "faculty"
+    uuid = f"{uuid.uuid4()}"
     try:
-        response = LlamaChat(bot_name, question)
+        response = LlamaChat(bot_name, question,uuid=uuid)
         for text in response:
             print(text, end="", flush=True)
     except Exception as e:

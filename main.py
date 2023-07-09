@@ -2,7 +2,7 @@ from flask import Flask, Response, request, jsonify
 from src.llama import chat
 from flask_cors import CORS
 from flask import stream_with_context
-import sys
+import uuid
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -13,11 +13,15 @@ def llama_chat_route():
     data = request.json
     question = data['question']
     question += "\n日本語で回答して"
-
+    request_uuid = f"{uuid.uuid4()}"
     def generate():
         buffer = ""
         buffer_size = 0
-        for response_text in chat.LlamaChat(bot_name=data['bot_name'], question=question):
+        first_uuid = None
+        for response_text in chat.LlamaChat(bot_name=data['bot_name'], question=question,uuid = request_uuid):
+            if first_uuid is None:
+                yield(f"id:{request_uuid}\n\n")
+                first_uuid = True
             buffer += response_text
             buffer_size += len(response_text.encode('utf-8'))  # Get the byte size of the response_text in UTF-8
 

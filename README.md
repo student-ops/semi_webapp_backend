@@ -12,3 +12,8 @@ curl --no-buffer -X POST -H "Content-Type: application/json" -d '{
 ```
 docker run -d -p 6379:6379 redis
 ```
+
+redis memory check
+```
+cedis-cli: not found
+```

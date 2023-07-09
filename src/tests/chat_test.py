@@ -20,7 +20,7 @@ from llama_index.evaluation import QueryResponseEvaluator
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
-def LlamaChat(bot_name, question):
+def LlamaChat(bot_name, question,uuid):
     model_name = "text-davinci-003"
     model_temperature = 0
 
@@ -42,8 +42,6 @@ def LlamaChat(bot_name, question):
         service_context=service_context
     )
     response = query_engine.query(question)
-    key = f"{uuid.uuid4()}"
-    print(key)
     response_txt = ""
     for text in response.response_gen:
         response_txt += text
@@ -51,7 +49,7 @@ def LlamaChat(bot_name, question):
     res = response.get_response()
     res.response = response_txt
     pprint(res)
-    r.set(key, pickle.dumps(res))
+    r.set(uuid, pickle.dumps(res))
 
     # llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="text-davinci-003",streaming=True))
     # service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
