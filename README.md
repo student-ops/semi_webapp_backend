@@ -8,3 +8,7 @@ curl --no-buffer -X POST -H "Content-Type: application/json" -d '{
 }' http://localhost:4000/llama_chat
 
 ```
+
+```
+docker run -d -p 6379:6379 redis
+```

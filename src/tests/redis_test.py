@@ -44,7 +44,7 @@ def LlamaChat(bot_name, question):
     # Save response (without generator) to Redis
     response_copy = dict(response.__dict__)  # Create a copy of response's dictionary representation
     response_copy.pop('response_gen', None)  # Remove the generator
-    key = f"response:{uuid.uuid4()}"
+    key = f"{uuid.uuid4()}"
     print(key)
     r.set(key, pickle.dumps(response_copy))  # Save the dictionary to Redis
 
