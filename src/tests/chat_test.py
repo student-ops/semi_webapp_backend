@@ -10,42 +10,14 @@ from llama_index import (
 )
 from src.llama import utils
 from pprint import pprint 
-
-
-
-def InitIndex(bot_name):
-    print("init index")
-    print(os.getenv("INDEX_PATH"))
-    index_path = os.getenv("INDEX_PATH")
-    index_path = index_path + "/" + bot_name
-    print(index_path)
-    
-    # indexが存在する場合
-    if os.path.isfile(index_path + "/vector_store.json"):
-        print("index exists")
-        storage_context = StorageContext.from_defaults(
-            persist_dir=index_path)
-        index = load_index_from_storage(storage_context)
-    else:
-        print("index not found")
-        data_path = os.getenv("DATA_PATH") +"/" + bot_name
-        print(data_path)
-        documents = SimpleDirectoryReader(data_path).load_data()
-
-        index = GPTVectorStoreIndex.from_documents(documents)
-        index.storage_context.persist(persist_dir=index_path)
-    return index
-
-
+from src.llama import chat
 def LlamaChat(bot_name, question):
     model_name = "text-davinci-003"
     model_temperature = 0
 
     api_key = os.getenv("OPENAI_API_KEY")
 
-    print("Before calling InitIndex")
-    index = InitIndex(bot_name=bot_name)
-    print("After calling InitIndex")
+    index = chat.InitIndex(bot_name=bot_name)
 
     print(index)
     llm = utils.get_llm(model_name, model_temperature, api_key)
@@ -61,9 +33,7 @@ def LlamaChat(bot_name, question):
         service_context=service_context
     )
     response = query_engine.query(question)
-    response.get_response()
-    for text in response.response_gen:
-        yield text
+    return response
 
 if __name__ == "__main__":
     question = "どのような人材を目指していますか"
@@ -71,7 +41,17 @@ if __name__ == "__main__":
     bot_name = "faculty"
     try:
         response = LlamaChat(bot_name, question)
-        for text in response:
-            print(text, end="", flush=True)
+        if response is not None:
+            print("#############")
+            print(type(response))
+            try:
+                response = next(response)
+            except StopIteration:
+                response = None
+            pprint(response)
+        else:
+            print("No response received.")
+
     except Exception as e:
         print("An error occurred: ", str(e))
+    # InitIndex("faculty")

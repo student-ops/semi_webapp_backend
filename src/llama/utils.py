@@ -9,6 +9,6 @@ def get_llm(model_name, model_temperature, api_key, max_tokens=512):
             temperature=model_temperature, model_name=model_name, max_tokens=max_tokens,streaming=True
         )
     else:
-        return ChatOpenAI(
+        return OpenAI(
             temperature=model_temperature, model_name=model_name, max_tokens=max_tokens
         )
