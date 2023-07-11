@@ -13,3 +13,4 @@ body_text = soup.body.get_text()
 
 # 本文の表示
 print(body_text)
+print("tes")
