@@ -9,6 +9,13 @@ curl --no-buffer -X POST -H "Content-Type: application/json" -d '{
 
 ```
 
+## 再起動時
+```
+source myvenv/bin/activate
+pip install -r requirements.txt
+python src/scraping/main.py
+```
+
 
 ```
 
