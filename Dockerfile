@@ -12,13 +12,13 @@ ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
 ENV TERM xterm
 COPY ./requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt 
-
-COPY ./src .
-COPY ./index .
-COPY main.py .
 
 # 必要なパッケージのインストール
-RUN pip install -e .
+RUN pip install --no-cache-dir -r requirements.txt 
+
+COPY ./src ./src
+COPY ./index ./index
+COPY main.py .
+
 
 CMD ["python", "main.py"]

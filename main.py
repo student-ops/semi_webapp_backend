@@ -3,6 +3,8 @@ from src.llama import chat
 from flask_cors import CORS
 from flask import stream_with_context
 import uuid
+from src.llama import evaluate
+import json
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -12,7 +14,6 @@ CORS(app)
 def llama_chat_route():
     data = request.json
     question = data['question']
-    question += "\n日本語で回答して"
     request_uuid = f"{uuid.uuid4()}"
     def generate():
         buffer = ""
@@ -35,10 +36,30 @@ def llama_chat_route():
             yield f"{buffer}"
 
     return Response(stream_with_context(generate()), mimetype='text/event-stream')
-# @app.route('/evaluate',methods =['POST'])
-# def evaluate_route():
-#     data = request.josn
-#     evaluation.Evaluate(data['id'])
+
+
+@app.route('/llama_evaluate',methods =['POST'])
+def llama_evaluate():
+    data= request.json
+    eval_result = evaluate.query_evaluation(data['id'],data['query'])
+    print(eval_result)
+    response_data = {
+        "eval_result":eval_result
+    }
+    return json.dumps(response_data, ensure_ascii=False).encode('utf-8'), 200
+
+
+@app.route('/chat_source_nodes',methods =['POST'])
+def chat_source_nodes():
+    data = request.json
+    source_nodes = evaluate.fetch_source_nodes(data['id'])
+    response_data = {
+        "source_nodes":source_nodes
+    }
+    return json.dumps(response_data, ensure_ascii=False).encode('utf-8'), 200
+    # return jsonify(response_data)
+
+    
 
 @app.route('/ping')
 def ping(): return Response('Pong', mimetype='text/plain')

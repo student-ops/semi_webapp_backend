@@ -9,12 +9,10 @@ from llama_index import (
     load_index_from_storage,
 )
 from src.llama import utils
+from src.redis import rest
 from pprint import pprint 
-import redis
 import pickle
 import uuid
-
-r = redis.Redis(host='localhost', port=6379, db=0)
 
 def InitIndex(bot_name):
     print("init index")
@@ -71,6 +69,7 @@ def LlamaChat(bot_name, question,uuid):
     res = response.get_response()
     res.response = response_txt
     pprint(res)
+    r = rest.SetRedis() 
     r.set(uuid, pickle.dumps(res))
 
 if __name__ == "__main__":
