@@ -3,3 +3,4 @@ index/faculty
 .venv
 *.pyc
 __pycache__/
+envstart.sh
