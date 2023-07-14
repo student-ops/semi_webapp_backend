@@ -73,7 +73,7 @@ def LlamaChat(bot_name, question,uuid):
     r.set(uuid, pickle.dumps(res))
 
 if __name__ == "__main__":
-    question = "どのような人材を目指していますか"
+    question = "どのようなことを学びますか?\n"
     question += " 日本語で回答して"
     bot_name = "faculty"
     uuid = f"{uuid.uuid4()}"
