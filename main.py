@@ -18,11 +18,8 @@ def llama_chat_route():
     def generate():
         buffer = ""
         buffer_size = 0
-        first_uuid = None
+        yield(f"id:{request_uuid}\n\n")
         for response_text in chat.LlamaChat(bot_name=data['bot_name'], question=question,uuid = request_uuid):
-            if first_uuid is None:
-                yield(f"id:{request_uuid}\n\n")
-                first_uuid = True
             buffer += response_text
             buffer_size += len(response_text.encode('utf-8'))  # Get the byte size of the response_text in UTF-8
 
