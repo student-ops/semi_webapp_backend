@@ -15,7 +15,6 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - DATA_PATH=${DATA_PATH}
-      - SITE_DATA_PATH=${SITE_DATA_PATH}
       - INDEX_PATH=${INDEX_PATH}
       - REDIS_PATH=redis:6379
       - IS_DOCKER=true
