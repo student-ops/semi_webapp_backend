@@ -63,4 +63,5 @@ def ping(): return Response('Pong', mimetype='text/plain')
 
 
 if __name__ == '__main__':
+    print("starting on port 4000")
     app.run(host='0.0.0.0', port=4000)
