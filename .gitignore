@@ -1,5 +1,4 @@
 *.env
-index/faculty
 .venv
 *.pyc
 __pycache__/
