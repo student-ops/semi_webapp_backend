@@ -28,6 +28,6 @@ services:
     ports:
       - 4040:4040
     environment:
-      - NGROK_AUTH=${NGROK_APP_AUTH}
+      - NGROK_AUTH=${NGROK_AUTH}
       - NGROK_PROTOCOL=https
       - NGROK_PORT=python_project:4000
