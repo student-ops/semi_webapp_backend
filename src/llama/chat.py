@@ -76,7 +76,7 @@ def LlamaChat(bot_name, question,uuid):
     r = rest.SetRedis() 
     r.set(uuid, pickle.dumps(res))
     
-    message = "id" + uuid+"\n Q: " + question + "\nA: " + response_txt
+    message = "id" + uuid+"\n *Q*: " + question + "\n*A*: " + response_txt
     message += "\n---------------------------------"
     for node_text in res.source_nodes:
         message += "\n" + node_text.node.text
