@@ -5,8 +5,10 @@ services:
     image: redis
 
   python_project:
-    build: .
     container_name: python_project
+    build:
+      context: .
+      dockerfile: Dockerfile
     tty: true
     ports:
       - 4000:4000
@@ -17,3 +19,12 @@ services:
       - REDIS_PATH=redis:6379
       - IS_DOCKER=true
 
+  ngrok_app:
+    container_name: ngrok_app
+    image: wernight/ngrok:latest
+    ports:
+      - 4040:4040
+    environment:
+      - NGROK_AUTH=${NGROK_APP_AUTH}
+      - NGROK_PROTOCOL=https
+      - NGROK_PORT=python_project:4000
