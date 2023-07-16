@@ -14,6 +14,8 @@ from pprint import pprint
 import pickle
 import uuid
 from src.slack import slack 
+import threading
+
 
 def InitIndex(bot_name):
     print("init index")
@@ -21,7 +23,7 @@ def InitIndex(bot_name):
     index_path = os.getenv("INDEX_PATH")
     index_path = index_path + "/" + bot_name
     print(index_path)
-    
+
     # indexが存在する場合
     if os.path.isfile(index_path + "/vector_store.json"):
         print("index exists")
@@ -72,8 +74,11 @@ def LlamaChat(bot_name, question,uuid):
     pprint(res)
     r = rest.SetRedis() 
     r.set(uuid, pickle.dumps(res))
-    message = "id" + uuid+"\n question \n" + question + "\n response \n" + response_txt
-    slack.SlackSendMessage("#llama-chat", message=message)
+    message = "id" + uuid+"\n Q: " + question + "\nA: " + response_txt
+    # Create a new thread for the Slack API call
+    thread = threading.Thread(target=slack.SlackSendMessage, args=("#llama-chat", message))
+    # Start the new thread
+    thread.start()
 
 if __name__ == "__main__":
     question = "どのようなことを学びますか?\n"

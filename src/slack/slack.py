@@ -3,12 +3,19 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
 # 環境変数からトークンを取得
-token = os.getenv("SLACK_BOT_TOKEN")
 
 # Slackクライアントを初期化
-client = WebClient(token=token)
 
 def SlackSendMessage(channel_id, message):
+
+    token = os.getenv("SLACK_BOT_TOKEN")
+    client = WebClient(token=token)
+    question_dict =[]
+    if message not in question_dict:
+        question_dict.append(message)
+    else:
+        print("question already asked")
+        return None
     try:
         # メッセージを投稿
         response = client.chat_postMessage(
