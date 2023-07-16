@@ -37,4 +37,6 @@ redis memory check
 cedis-cli: not found
 ```
 
+docker compose -f docker-compose.local.yml up python_project redis
+docker compose -f docker-compose.local.yml down python_project redis
 
