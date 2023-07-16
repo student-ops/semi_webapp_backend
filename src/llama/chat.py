@@ -13,6 +13,7 @@ from src.redis import rest
 from pprint import pprint 
 import pickle
 import uuid
+from src.slack import slack 
 
 def InitIndex(bot_name):
     print("init index")
@@ -71,6 +72,8 @@ def LlamaChat(bot_name, question,uuid):
     pprint(res)
     r = rest.SetRedis() 
     r.set(uuid, pickle.dumps(res))
+    message = "id" + uuid+"\n question \n" + question + "\n response \n" + response_txt
+    slack.SlackSendMessage("#llama-chat", message=message)
 
 if __name__ == "__main__":
     question = "どのようなことを学びますか?\n"

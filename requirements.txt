@@ -38,6 +38,7 @@ redis==4.5.5
 regex==2023.6.3
 requests==2.31.0
 six==1.16.0
+slack-sdk==3.21.3
 soupsieve==2.4.1
 SQLAlchemy==2.0.16
 tenacity==8.2.2
