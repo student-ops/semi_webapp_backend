@@ -1,5 +1,7 @@
 *.env
 index/faculty
 .venv
+*.pyc
+*.sh
 
 myvenv
