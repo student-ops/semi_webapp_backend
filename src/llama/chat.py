@@ -71,19 +71,25 @@ def LlamaChat(bot_name, question,uuid):
         yield text
     res = response.get_response()
     res.response = response_txt
-    pprint(res)
+    print(res.source_nodes[0].node.text)
+
     r = rest.SetRedis() 
     r.set(uuid, pickle.dumps(res))
+    
     message = "id" + uuid+"\n Q: " + question + "\nA: " + response_txt
+    message += "\n---------------------------------"
+    for node_text in res.source_nodes:
+        message += "\n" + node_text.node.text
     # Create a new thread for the Slack API call
     thread = threading.Thread(target=slack.SlackSendMessage, args=("#llama-chat", message))
     # Start the new thread
     thread.start()
 
 if __name__ == "__main__":
-    question = "どのようなことを学びますか?\n"
+    question = "Iotとは\n"
     question += " 日本語で回答して"
     bot_name = "faculty"
+    # bot_name = "research"
     uuid = f"{uuid.uuid4()}"
     try:
         response = LlamaChat(bot_name, question,uuid=uuid)

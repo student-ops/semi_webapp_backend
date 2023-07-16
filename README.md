@@ -7,6 +7,11 @@ curl --no-buffer -X POST -H "Content-Type: application/json" -d '{
   "question": "どのような人材を目指していますか"
 }' http://localhost:4000/llama_chat
 
+curl --no-buffer -X POST -H "Content-Type: application/json" -d '{
+  "bot_name": "research",
+  "question": "Loraとは"
+}' http://localhost:4000/llama_chat
+
 
 
 // ソースノード
